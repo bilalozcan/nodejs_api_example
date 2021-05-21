@@ -1,0 +1,53 @@
+var config = require('./dbconfig');
+const sql = require('mssql');
+
+async function getBooks() {
+    try {
+        let pool = await sql.connect(config);
+        let books = await pool.request().query("SELECT TOP (1) * from kitap");
+        return books.recordsets;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+async function getBook(bookId) {
+    try {
+        let pool = await sql.connect(config);
+        let product = await pool.request()
+            .input('input_parameter', sql.Int, bookId)
+            .query("SELECT * from kitap where kitapno = @input_parameter");
+        return product.recordsets;
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+async function addBook(book) {
+
+    try {
+        let pool = await sql.connect(config);
+        let insertBook = await pool.request()
+            .input('kitapno', sql.Int,book.kitapno)
+            .input('ad', sql.NVarChar, book.ad)
+            .input('sayfasayisi', sql.Int, book.sayfasayisi)
+            .input('puan', sql.Int, book.puan)
+            .input('yazarno', sql.Int, book.yazarno)
+            .input('turno', sql.Int, book.turno)
+            .execute('kitap');
+        return insertBook.recordsets;
+    }
+    catch (err) {
+        console.log(err);
+    }
+
+}
+
+module.exports = {
+    getOrders: getBooks,
+    getOrder: getBook,
+    addOrder: addBook
+}
