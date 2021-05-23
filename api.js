@@ -34,12 +34,15 @@ router.route('/orders/:id').get((request, response) => {
 })
 
 router.route('/orders').post((request, response) => {
+    // console.log(request);
+    console.log(request.body);
 
-    let order = { ...request.body }
+    let book = { ...request.body }
 
-    dboperations.addOrder(order).then(result => {
+    dboperations.addOrder(book).then(result => {
         response.status(201).json(result);
     })
+    // response.status(201).json();
 
 })
 

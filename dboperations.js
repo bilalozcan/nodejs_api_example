@@ -29,15 +29,24 @@ async function getBook(bookId) {
 async function addBook(book) {
 
     try {
+        // let pool = await sql.connect(config);
+        // let addProduct = await pool.request()
+        //     .input('kitapno', sql.Int, book.kitapno)
+        //     .input('ad', sql.NVarChar, book.ad)
+        //     .input('sayfasayisi', sql.Int, book.sayfasayisi)
+        //     .input('puan', sql.Int, book.puan)
+        //     .input('yazarno', sql.Int, book.yazarno)
+        //     .input('turno', sql.Int, book.turno)
+        //     .query('insert into kitap(ad, sayfasayisi, puan, yazarno, turno) values(@ad , @sayfasayisi, @puan , @yazarno , @turno)');
+        // return addProduct.recordsets;
         let pool = await sql.connect(config);
         let insertBook = await pool.request()
-            .input('kitapno', sql.Int,book.kitapno)
             .input('ad', sql.NVarChar, book.ad)
             .input('sayfasayisi', sql.Int, book.sayfasayisi)
             .input('puan', sql.Int, book.puan)
             .input('yazarno', sql.Int, book.yazarno)
             .input('turno', sql.Int, book.turno)
-            .execute('kitap');
+            .execute('addBook');
         return insertBook.recordsets;
     }
     catch (err) {
